@@ -2,7 +2,7 @@ import sys
 import re
 
 
-def search_password_list(user_password):
+def search_in_black_sheet(user_password):
     with open("pass.txt", "r", encoding="utf-8-sig") as passwords:
         if user_password in passwords.read().split():
             return False
@@ -31,13 +31,11 @@ def get_password_strength(password):
 if __name__ == '__main__':
     user_password = input("Введите пароль: ")
     if user_password:
-        rating = get_password_strength(user_password)
+        if search_in_black_sheet(user_password):
+            rating = get_password_strength(user_password) + 1
+        else:
+            sys.exit("Ошибка: введённый пароль не допустим.")
     else:
         sys.exit("Ошибка: пароль не введён.")
-    if search_password_list(user_password):
-        rating = get_password_strength(user_password) + 1
-    else:
-        sys.exit("Ошибка: введённый пароль не допустим.")
     print(
-        "Сложность пароля оценивается на \
-        {} балла(ов) из 10".format(rating))
+        "Сложность пароля оценивается на {} балла(ов) из 10".format(rating))
