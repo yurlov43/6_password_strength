@@ -14,11 +14,15 @@ def password_in_black_list(user_password, black_list):
     return False
 
 
-def estimate_password_length(user_password, rating=1):
-    if 5 < len(user_password) <= 10:
-        rating = 2
-    if 10 < len(user_password):
-        rating = 3
+def estimate_password_length(
+        user_password,
+        rating=1,
+        small_length=5,
+        average_length=10):
+    if small_length < len(user_password) <= average_length:
+        rating += 1
+    if average_length < len(user_password):
+        rating += 2
     return rating
 
 
