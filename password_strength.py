@@ -1,5 +1,6 @@
 import sys
 import re
+import getpass
 
 
 def search_in_black_sheet(user_password):
@@ -44,7 +45,8 @@ def estimate_grouping(user_password, rating=1):
     return rating
 
 if __name__ == '__main__':
-    user_password = input("Введите пароль: ")
+    user_password = getpass.getpass("Введите пароль: ")
+    print(user_password)
     if user_password:
         if search_in_black_sheet(user_password):
             rating = estimate_password_length(user_password)
