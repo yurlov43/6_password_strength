@@ -3,11 +3,15 @@ import re
 import getpass
 
 
-def search_in_black_sheet(user_password):
-    with open("pass.txt", "r", encoding="utf-8-sig") as passwords:
-        if user_password in passwords.read().split():
-            return False
-    return True
+def open_black_list(filepatch="pass.txt"):
+    with open(filepatch, "r", encoding="utf-8-sig") as black_list:
+        return black_list.read()
+
+
+def password_in_black_list(user_password, black_list):
+    if user_password in black_list.split():
+        return True
+    return False
 
 
 def estimate_password_length(user_password, rating=1):
@@ -46,9 +50,9 @@ def estimate_grouping(user_password, rating=1):
 
 if __name__ == '__main__':
     user_password = getpass.getpass("Введите пароль: ")
-    print(user_password)
     if user_password:
-        if search_in_black_sheet(user_password):
+        black_list = open_black_list()
+        if not password_in_black_list(user_password, black_list):
             rating = estimate_password_length(user_password)
             rating += symbol_groups_serch(user_password)
             rating += estimate_grouping(user_password)
