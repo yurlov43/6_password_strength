@@ -1,6 +1,7 @@
 import sys
 import re
 import getpass
+from string import punctuation
 
 
 def open_black_list(filepatch="pass.txt"):
@@ -33,7 +34,7 @@ def symbol_groups_serch(user_password, rating):
         rating += 1
     if re.search(r"[0-9]+", user_password):
         rating += 1
-    if re.search(r"[!@#$%^&*-]+", user_password):
+    if re.search(r"[{}]+".format(punctuation), user_password):
         rating += 1
     return rating
 
@@ -42,7 +43,7 @@ def estimate_grouping(user_password, rating):
     password_pattern = re.compile(r"""(?P<lower_case>[a-z]+)
         |(?P<uppercase>[A-Z]+)
         |(?P<digits>[0-9]+)
-        |(?P<special_symbols>[!@#$%^&*-]+)""", re.X)
+        |(?P<special_symbols>[{}]+)""".format(punctuation), re.X)
     groups_in_password = password_pattern.finditer(user_password)
     groups_number = len(list(groups_in_password))
     if 0 < groups_number <= 2:
