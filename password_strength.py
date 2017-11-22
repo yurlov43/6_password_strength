@@ -44,22 +44,27 @@ def symbol_groups_serch(user_password, rating):
     return rating
 
 
-def estimate_grouping(user_password, rating):
+def estimate_grouping(
+        user_password,
+        rating,
+        no_division_into_groups=0,
+        small_number_of_groups=2,
+        large_number_of_groups=4):
     """Поиск в пароле групп различных символов. Например,
     DSFdfdDSFsd - 4 группы чередующихся строчных и заглавных букв"""
     password_pattern = re.compile(r"""
-        ([a-z]+)  #поиск строчных букв
-        |([A-Z]+) #поиск заглавных букв
-        |([0-9]+) #поиск цифр
-        |([{}]+)  #поиск спец символов, например, !@#$%^&*()-
+        ([a-z]+)  #поиск группы строчных букв
+        |([A-Z]+) #поиск группы заглавных букв
+        |([0-9]+) #поиск группы цифр
+        |([{}]+)  #поиск группы спец. символов, например, !@#$%^&*()-
         """.format(punctuation), re.X)
     groups_in_password = password_pattern.finditer(user_password)
     groups_number = len(list(groups_in_password))
-    if 0 < groups_number <= 2:
+    if no_division_into_groups < groups_number <= small_number_of_groups:
         rating += 1
-    if 2 < groups_number <= 4:
+    if small_number_of_groups < groups_number <= large_number_of_groups:
         rating += 2
-    if 4 < groups_number:
+    if large_number_of_groups < groups_number:
         rating += 3
     return rating
 
