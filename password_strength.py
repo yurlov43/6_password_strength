@@ -16,7 +16,7 @@ def password_in_black_list(user_password, black_list):
 
 def estimate_password_length(
         user_password,
-        rating=1,
+        rating,
         small_length=5,
         average_length=10):
     if small_length < len(user_password) <= average_length:
@@ -26,7 +26,7 @@ def estimate_password_length(
     return rating
 
 
-def symbol_groups_serch(user_password, rating=0):
+def symbol_groups_serch(user_password, rating):
     if re.search(r"[a-z]+", user_password):
         rating += 1
     if re.search(r"[A-Z]+", user_password):
@@ -38,18 +38,19 @@ def symbol_groups_serch(user_password, rating=0):
     return rating
 
 
-def estimate_grouping(user_password, rating=1):
-    groups_in_password = re.finditer(
-        r"(?P<lower_case>[a-z]+)"
-        "|(?P<uppercase>[A-Z]+)"
-        "|(?P<digits>[0-9]+)"
-        "|(?P<special_symbols>[!@#$%^&*-]+)",
-        user_password)
+def estimate_grouping(user_password, rating):
+    password_pattern = re.compile(r"""(?P<lower_case>[a-z]+)
+        |(?P<uppercase>[A-Z]+)
+        |(?P<digits>[0-9]+)
+        |(?P<special_symbols>[!@#$%^&*-]+)""", re.X)
+    groups_in_password = password_pattern.finditer(user_password)
     groups_number = len(list(groups_in_password))
+    if 0 < groups_number <= 2:
+        rating += 1 
     if 2 < groups_number <= 4:
-        rating = 2
+        rating += 2
     if 4 < groups_number:
-        rating = 3
+        rating += 3
     return rating
 
 if __name__ == '__main__':
@@ -57,9 +58,10 @@ if __name__ == '__main__':
     if user_password:
         black_list = open_black_list()
         if not password_in_black_list(user_password, black_list):
-            rating = estimate_password_length(user_password)
-            rating += symbol_groups_serch(user_password)
-            rating += estimate_grouping(user_password)
+            rating = 1
+            rating = estimate_password_length(user_password, rating)
+            rating = symbol_groups_serch(user_password, rating)
+            rating = estimate_grouping(user_password, rating)
         else:
             sys.exit("Ошибка: введённый пароль не допустим.")
     else:
