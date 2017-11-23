@@ -22,17 +22,12 @@ def estimate_password_length(
 
 
 def symbol_groups_serch(user_password, rating):
-    """Поиск в пароле символов различных групп"""
-    # поиск строчных букв
     if re.search(r"[a-z]+", user_password):
         rating += 1
-    # поиск заглавных букв
     if re.search(r"[A-Z]+", user_password):
         rating += 2
-    # поиск цифр
     if re.search(r"[0-9]+", user_password):
         rating += 2
-    # поиск спец символов, например, !@#$%^&*()-
     if re.search(r"[{}]+".format(punctuation), user_password):
         rating += 2
     return rating
