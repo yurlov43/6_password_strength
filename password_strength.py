@@ -4,8 +4,8 @@ import getpass
 from string import punctuation
 
 
-def open_black_list(filepatch="pass.txt"):
-    with open(filepatch, "r", encoding="utf-8-sig") as black_list:
+def open_black_list(filepath="pass.txt"):
+    with open(filepath, "r", encoding="utf-8-sig") as black_list:
         return black_list.read()
 
 
