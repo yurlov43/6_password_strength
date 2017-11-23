@@ -12,9 +12,9 @@ def open_black_list(filepath="pass.txt"):
 def estimate_password_length(
         user_password,
         rating,
-        small_length=5,
+        short_length=5,
         average_length=10):
-    if small_length < len(user_password) <= average_length:
+    if short_length < len(user_password) <= average_length:
         rating += 1
     if average_length < len(user_password):
         rating += 2
