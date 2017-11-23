@@ -9,12 +9,6 @@ def open_black_list(filepatch="pass.txt"):
         return black_list.read()
 
 
-def password_in_black_list(user_password, black_list):
-    if user_password in black_list.split():
-        return True
-    return False
-
-
 def estimate_password_length(
         user_password,
         rating,
@@ -72,7 +66,7 @@ if __name__ == '__main__':
     user_password = getpass.getpass("Введите пароль: ")
     if user_password:
         black_list = open_black_list()
-        if not password_in_black_list(user_password, black_list):
+        if user_password not in black_list.split():
             rating = 1
             rating = estimate_password_length(user_password, rating)
             rating = symbol_groups_serch(user_password, rating)
